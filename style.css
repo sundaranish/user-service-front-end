@@ -1,0 +1,78 @@
+#root {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .card {
+    margin: 1rem;
+    border: 1px solid rgb(136, 71, 71);
+  }
+  
+  @media screen and (min-width: 600px) {
+    .card {
+      flex: 1 1 calc(50% - 2rem);
+    }
+  }
+  Body {
+    font-family: Calibri, Helvetica, sans-serif;
+    background-color: rgb(114, 55, 65);
+  }
+  button { 
+    background-color: #b9d1ba; 
+    width: 100%;
+     color: rgb(255, 0, 0); 
+     padding: 15px; 
+     margin: 10px 0px; 
+     border: none; 
+     cursor: pointer; 
+  } 
+  input[type=text], input[type=password] { 
+        width: 100%; 
+        margin: 8px 0;
+        padding: 12px 20px; 
+        display: inline-block; 
+        border: 2px solid green; 
+        box-sizing: border-box; 
+    }
+  button:hover { 
+        opacity: 0.7; 
+    } 
+  .cancelbtn { 
+        width: auto; 
+        padding: 10px 18px;
+        margin: 10px 5px;
+    } 
+
+  form { 
+    border: 6px solid #f1f1f1; 
+  } 
+
+.container { 
+  padding: 28px; 
+  background-color: lightblue;
+} 
+  
+  @media screen and (min-width: 900px) {
+    .card {
+      flex: 1 1 calc(33% - 2rem);
+    }
+  }

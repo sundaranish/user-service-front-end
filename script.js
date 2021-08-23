@@ -7,9 +7,12 @@ const getusers_api_url =
 const addusers_api_url = 
 "http://localhost:8080/user-service/user";
 
+const search_api_url = 
+"http://localhost:8080/user-service/search";
+
 const handleLogout = () => {
-  //window.localStorage.clear();
- // window.location.reload(true);
+  window.localStorage.clear();
+  window.location.reload(true);
   document.getElementById("users").hidden = true;
   disable_enable('home');
   //window.location.replace('/');
@@ -22,18 +25,20 @@ function disable_enable(_this)
       document.getElementById('loginbutton').hidden=true;
       document.getElementById('container').hidden=true;
       document.getElementById('login').hidden=true;
+      document.getElementById("search").style.display = "block";
     }
     if (_this == 'home')
     {
       document.getElementById('loginbutton').hidden=false;
       document.getElementById('container').hidden=false;
       document.getElementById('login').hidden=false;
+      document.getElementById("search").style.display = 'none';
     }
 }
 
 window.onbeforeunload = function() { return "Your work will be lost."; };
 
-async function authenticate(uname,pwd) {
+async function authenticate(uname,pwd,api,search) {
     fetch(authenticate_api_url, {
     mode: 'cors',
     method: 'POST',
@@ -44,7 +49,7 @@ async function authenticate(uname,pwd) {
       'Accept': 'application/json',
       'Access-Control-Allow-Origin': 'http://localhost:8080',
       'Access-Control-Allow-Methods': 'POST,OPTIONS,GET',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Haders': 'Content-Type',
       'Access-Control-Allow-Credentials': 'false',
       'Origin': 'http://localhost:8080'
     },
@@ -62,9 +67,21 @@ async function authenticate(uname,pwd) {
       hideloader();
     }
     //show(data);
-    if(data.token){
+
+    console.log("api value is: "+api); 
+
+    if(data.token && api=='users'){
+      document.getElementById("search").style.display = "block";
       disable_enable('login');
       getusers(data,getusers_api_url);
+    }
+    else if(data.token && api=='search'){
+  
+      var url =search_api_url;
+
+      url=url+'?title='+search;
+
+      searchbytitle(data,url);
     }
     else{
       disable_enable('home');
@@ -80,10 +97,16 @@ async function authenticate(uname,pwd) {
 
 }
 
+function showsearch() {
+  document.getElementById("search").style.display = "block";
+
+}
 
 function hideloader() {
   document.getElementById('loading').style.display = 'none';
 }
+
+
 
 function getusers(data,url) {
   fetch(url, {
@@ -112,11 +135,52 @@ function getusers(data,url) {
     console.log(data); 
     if (data) {
       hideloader();
+      
     }
     showUsers(data);
+    //showsearch();
   })
 .catch(error => console.log('Authentication failed : ' + error.message));
 }
+
+
+
+
+function searchbytitle(data,url) {
+  fetch(url, {
+    mode: 'cors',
+    method: 'GET',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Authorization': 'Bearer '+ data.token,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:8080',
+      'Access-Control-Allow-Methods': 'POST,OPTIONS,GET',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Credentials': 'false',
+      'Origin': 'http://localhost:8080'
+    },
+    Origin: 'http://localhost:8080',
+    origin: 'http://localhost:8080',
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer'
+  })
+
+  .then(response => response.json())
+  .then(data => {
+    console.log(data); 
+    if (data) {
+      hideloader();
+      
+    }
+    showUsers(data);
+    //showsearch();
+  })
+.catch(error => console.log('Authentication failed : ' + error.message));
+}
+
 
 
 function addusers(data,url) {
